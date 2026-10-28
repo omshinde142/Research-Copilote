@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Copilot</title>
+<style>
+:root{--bg:#070b17;--glass:rgba(16,22,44,.74);--line:rgba(160,175,220,.18);--ink:#e8ecf8;--muted:#98a3c2;--gold:#ffc857}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-columns:1fr 420px;height:100vh;
+ background:radial-gradient(1200px 700px at 30% 20%,#141c3d 0,transparent 60%),radial-gradient(900px 600px at 80% 95%,#1b1035 0,transparent 55%),var(--bg)}
+#stage{position:relative;min-width:0;overflow:hidden}
+canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+canvas:active{cursor:grabbing}
+button{font:inherit}
+button:focus-visible,#bar:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+#bar{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:min(700px,calc(100% - 32px));background:var(--glass);backdrop-filter:blur(14px);
+ border:1px solid var(--line);border-radius:18px;padding:10px;box-shadow:0 14px 44px rgba(0,0,0,.45)}
+.in{display:flex;gap:8px;align-items:center}
+#q{flex:1;min-width:0;background:transparent;border:0;color:var(--ink);font-size:1.02rem;padding:8px 10px;outline:0}
+#q::placeholder{color:var(--muted)}
+.seg{display:flex;background:rgba(255,255,255,.07);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 14px;border-radius:999px;font-weight:600;font-size:.85rem;cursor:pointer}
+.seg button.on{background:var(--gold);color:#1a1405}
+#go{width:38px;height:38px;border-radius:50%;border:0;background:var(--gold);color:#1a1405;font-size:1.1rem;font-weight:700;cursor:pointer}
+#chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+#chips button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:4px 11px;font-size:.8rem;cursor:pointer}
+#chips button:hover{color:var(--ink);border-color:var(--gold)}
+#tip{position:absolute;pointer-events:none;background:var(--glass);border:1px solid var(--line);border-radius:8px;padding:3px 10px;font-size:.8rem;display:none}
+#hint{position:absolute;left:18px;bottom:14px;color:var(--muted);font-size:.8rem}
+aside{background:var(--glass);backdrop-filter:blur(14px);border-left:1px solid var(--line);padding:24px;overflow-y:auto}
+h1{font:700 1.6rem/1.15 Georgia,"Palatino Linotype",serif;margin:0 0 4px}
+h2{font:700 1.05rem Georgia,serif;margin:22px 0 6px}
+.muted{color:var(--muted);font-size:.85rem}
+.card{padding:12px 14px;border:1px solid var(--line);border-radius:12px;margin:8px 0;cursor:pointer;transition:.15s}
+.card:hover{border-color:var(--gold);transform:translateY(-1px);background:rgba(255,255,255,.04)}
+.meta{display:flex;gap:6px;margin-top:6px;font-size:.75rem;flex-wrap:wrap}
+.meta span{background:rgba(255,255,255,.08);border-radius:999px;padding:1px 9px;color:var(--muted)}
+.meta .ok{color:#7fe3b0}
+.rel{height:3px;background:rgba(255,255,255,.08);border-radius:3px;margin-top:8px}
+.rel i{display:block;height:100%;background:var(--gold);border-radius:3px}
+.ans{border-left:3px solid var(--gold);padding:4px 0 4px 14px;font:1.02rem/1.65 Georgia,serif;margin-top:12px}
+.ans.warn{border-color:#ff7a7a;font-family:inherit}
+.btn{border:1px solid var(--gold);background:transparent;color:var(--gold);border-radius:999px;padding:6px 14px;font-weight:600;font-size:.85rem;cursor:pointer}
+.bars{display:flex;align-items:flex-end;gap:4px;height:64px}.bars div{flex:1;background:var(--gold);border-radius:3px 3px 0 0;min-height:2px;opacity:.85}
+.yrs{display:flex;gap:4px;font-size:.7rem;color:var(--muted)}.yrs span{flex:1;text-align:center}
+table{width:100%;border-collapse:collapse;font-size:.83rem;margin:6px 0 10px}td{padding:4px 4px 4px 0;border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font:700 1.05rem Georgia,serif;margin-top:22px}
+a{color:var(--gold)}
+@media (max-width:860px){body{grid-template-columns:1fr;grid-template-rows:62vh 1fr;height:auto}aside{border-left:0}#chips{display:none}}
+</style></head><body>
+<div id="stage"><canvas id="map" aria-label="Map of research papers"></canvas>
+  <div id="bar"><div class="in"><input id="q" placeholder="Ask about any research topic…" aria-label="Search">
+    <div class="seg" role="group" aria-label="Mode"><button class="on" data-m="ask">Ask</button><button data-m="search">Find</button></div>
+    <button id="go" aria-label="Run">→</button></div><div id="chips"></div></div>
+  <div id="tip"></div><div id="hint">Drag to pan · scroll to zoom · click a dot to read the paper</div></div>
+<aside>
+  <h1>Research Copilot</h1>
+  <p class="muted">Every dot is a paper. Papers about similar ideas sit together, and each glowing region is a research topic.</p>
+  <div id="res"><p class="muted">Ask a question in the bar, or pick an example. Matching papers will light up in gold on the map.</p></div>
+  <div id="paper"></div>
+  <details><summary>Measured results</summary><div id="mx" class="muted">Loading…</div></details>
+</aside>
+<script>
+const $=s=>document.querySelector(s),cv=$("#map"),g=cv.getContext("2d"),tip=$("#tip");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let M,spr=[],gold,byC=[],V={s:1,x:0,y:0},hits=new Set(),sel=-1,foc=-1,W=1,H=1,B=1,drag=null,mode="ask";
+const mk=h=>{const k=document.createElement("canvas");k.width=k.height=32;const x=k.getContext("2d"),r=x.createRadialGradient(16,16,0,16,16,16);
+  r.addColorStop(0,`hsla(${h},90%,88%,1)`);r.addColorStop(.22,`hsla(${h},85%,62%,.6)`);r.addColorStop(1,`hsla(${h},85%,55%,0)`);x.fillStyle=r;x.fillRect(0,0,32,32);return k};
+const px=x=>(x*B+(W-B)/2)*V.s+V.x,py=y=>(y*B+(H-B)/2)*V.s+V.y;
+function size(){const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;g.setTransform(d,0,0,d,0,0);W=r.width;H=r.height;B=Math.min(W,H)*.92;draw()}
+function draw(){
+  g.clearRect(0,0,W,H);if(!M)return;
+  const dim=hits.size||foc>=0?.22:1,s=Math.max(5,Math.min(26,4+V.s*2.2));
+  g.globalCompositeOperation="lighter";g.globalAlpha=dim;
+  byC.forEach((idx,c)=>{const k=spr[c];for(const i of idx){const a=px(M.x[i]),b=py(M.y[i]);if(a>-s&&a<W+s&&b>-s&&b<H+s)g.drawImage(k,a-s/2,b-s/2,s,s)}});
+  g.globalAlpha=1;
+  hits.forEach(i=>{const a=px(M.x[i]),b=py(M.y[i]);g.drawImage(gold,a-16,b-16,32,32)});
+  g.globalCompositeOperation="source-over";
+  g.textAlign="center";g.font="italic 600 13px Georgia,serif";g.lineWidth=4;g.lineJoin="round";const boxes=[];
+  M.clusters.filter(c=>c.label!="Other").sort((a,b)=>b.n-a.n).forEach(c=>{
+    const x=px(c.x),y=py(c.y),w=c.label.length*6.5;if(x<0||x>W||y<0||y>H)return;
+    if(boxes.some(o=>Math.abs(o[0]-x)<(o[2]+w)/2&&Math.abs(o[1]-y)<17))return;boxes.push([x,y,w]);
+    g.strokeStyle="rgba(7,11,23,.9)";g.strokeText(c.label,x,y);g.fillStyle="#e8ecf8";g.fillText(c.label,x,y)});
+  g.lineWidth=2;g.strokeStyle="#fff";
+  [sel,foc].forEach(i=>{if(i>=0){g.beginPath();g.arc(px(M.x[i]),py(M.y[i]),i==sel?10:8,0,7);g.stroke()}});
+}
+function nearest(mx,my,r){let best=-1,bd=r*r;for(let i=0;i<M.x.length;i++){const dx=px(M.x[i])-mx,dy=py(M.y[i])-my,d=dx*dx+dy*dy;if(d<bd){bd=d;best=i}}return best}
+function flyTo(i){const s2=Math.max(V.s,6),x0=M.x[i]*B+(W-B)/2,y0=M.y[i]*B+(H-B)/2,tx=W/2-x0*s2,ty=H/2-y0*s2,a={...V};let t=0;
+  (function step(){t=Math.min(t+.07,1);const e=1-Math.pow(1-t,3);V.s=a.s+(s2-a.s)*e;V.x=a.x+(tx-a.x)*e;V.y=a.y+(ty-a.y)*e;draw();if(t<1)requestAnimationFrame(step)})()}
+cv.addEventListener("wheel",e=>{e.preventDefault();const r=cv.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,f=e.deltaY<0?1.2:1/1.2,ns=Math.max(.8,Math.min(60,V.s*f)),k=ns/V.s;
+  V.x=mx-(mx-V.x)*k;V.y=my-(my-V.y)*k;V.s=ns;draw()},{passive:false});
+cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,vx:V.x,vy:V.y,moved:false};cv.setPointerCapture(e.pointerId)});
+cv.addEventListener("pointermove",e=>{
+  if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;V.x=drag.vx+dx;V.y=drag.vy+dy;draw();return}
+  if(!M)return;const r=cv.getBoundingClientRect(),i=nearest(e.clientX-r.left,e.clientY-r.top,8);
+  if(i>=0){tip.style.display="block";tip.style.left=e.clientX-r.left+14+"px";tip.style.top=e.clientY-r.top+14+"px";tip.textContent=M.clusters.find(c=>c.id==M.c[i]).label}else tip.style.display="none"});
+cv.addEventListener("pointerup",e=>{const was=drag;drag=null;if(was&&!was.moved&&M){const r=cv.getBoundingClientRect(),i=nearest(e.clientX-r.left,e.clientY-r.top,10);if(i>=0)openPaper(i)}});
+
+const card=p=>`<div class="card" data-i="${p.i}"><b>${esc(p.title)}</b><div class="meta"><span>${p.category}</span><span>${p.year}</span><span class="${p.published?"ok":""}">${p.published?"Published":"Preprint"}</span></div>${p.score!=null?`<div class="rel" title="Relevance"><i style="width:${100/(1+Math.exp(-p.score/2))}%"></i></div>`:""}</div>`;
+function list(items){hits=new Set(items.map(p=>p.i));draw();return items.map(card).join("")}
+function wire(root){root.querySelectorAll(".card").forEach(c=>{const i=+c.dataset.i;c.onclick=()=>openPaper(i);c.onmouseenter=()=>{foc=i;draw()};c.onmouseleave=()=>{foc=-1;draw()}})}
+async function openPaper(i){
+  sel=i;flyTo(i);const p=await (await fetch("/api/paper/"+i)).json(),t=await (await fetch("/api/trend/"+p.cluster)).json(),mx=Math.max(...t.counts);
+  $("#paper").innerHTML=`<h2>${esc(p.title)}</h2><div class="meta"><span>${p.category}</span><span>${p.year}</span><span class="${p.published?"ok":""}">${p.published?"Published":"Preprint"}</span></div>
+  <p>${esc(p.abstract)}</p><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/${p.arxiv}">Open on arXiv</a> &nbsp; <button class="btn" id="sim">Find similar papers</button></p><div id="simres"></div>
+  <h2>Papers per year in this topic</h2><p class="muted">${esc(t.label)}</p><div class="bars">${t.counts.map(c=>`<div title="${c}" style="height:${c/mx*100}%"></div>`).join("")}</div><div class="yrs">${t.years.map(y=>`<span>${String(y).slice(2)}</span>`).join("")}</div>`;
+  $("#sim").onclick=async()=>{const s=await (await fetch("/api/similar/"+i)).json();$("#simres").innerHTML=list(s);wire($("#simres"))};
+  $("#paper").scrollIntoView({behavior:"smooth"});
+}
+async function run(){
+  const q=$("#q").value.trim();if(q.length<3)return;$("#res").innerHTML='<p class="muted">Searching…</p>';$("#paper").innerHTML="";
+  try{const d=await (await fetch(`/api/${mode}?q=`+encodeURIComponent(q))).json();
+    if(mode=="ask"){
+      const a=!d.confident?`<div class="ans warn">No strong match in these papers, so no answer is given. Try different words, or look at the closest papers below.</div>`:
+        `<div class="ans">${d.parts.map(p=>`<span>${esc(p.text)}${d.mode=="extractive"?"":p.supported?" ✓":" ⚠"}</span>`).join(" ")}</div><p class="muted">${d.mode=="extractive"?"Every sentence is a direct quote from a paper’s abstract.":"Answer by "+esc(d.mode)+". ✓ matches the cited abstract, ⚠ needs checking."}</p>`;
+      $("#res").innerHTML=a+"<h2>Sources</h2>"+list(d.sources)}
+    else $("#res").innerHTML="<h2>Top matches</h2>"+list(d);
+    wire($("#res"))}catch(e){$("#res").innerHTML='<p class="muted">Could not reach the server. Is it running?</p>'}
+}
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{mode=b.dataset.m;document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x==b))});
+$("#go").onclick=run;$("#q").onkeydown=e=>{if(e.key=="Enter")run()};
+["How do transformers handle long documents?","Detecting fake news","Diffusion models for image generation","Graph neural networks"].forEach(t=>{
+  const b=document.createElement("button");b.textContent=t;b.onclick=()=>{$("#q").value=t;run()};$("#chips").appendChild(b)});
+
+const tb=(h,rows)=>`<table><tr>${h.map(x=>`<td class="muted">${x}</td>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join("")}</tr>`).join("")}</table>`;
+function results(m){let h="";
+  if(m.retrieval)h+=`<p>${esc(m.retrieval.task)}</p>`+tb(["Search method","Recall@10","MRR"],Object.entries(m.retrieval.results).map(([n,v])=>[n,(v["recall@10"]*100).toFixed(1)+"%",v.mrr]));
+  if(m.classification){const c=m.classification;h+=`<p>${esc(c.task)}</p>`+tb(["Model","Accuracy","Macro-F1"],Object.entries(c.results).map(([n,v])=>[n,(v.accuracy*100).toFixed(1)+" ± "+(v.std*100).toFixed(1),v.f1_macro]))+
+    `<p>Most confused field pairs (true → predicted)</p>`+tb(["Pair","Papers"],c.confusions.map(x=>[x.true+" → "+x.pred,x.n]))}
+  if(m.accuracy)h+=`<p>${esc(m.task||"")} (single split)</p>`+tb(["Model","Accuracy"],Object.entries(m.accuracy).map(([n,a])=>[n,(a*100).toFixed(1)+"%"]));
+  return h||"Run evaluate_ml.py and bench.py to fill this in."}
+gold=mk(42);
+fetch("/api/map").then(r=>r.json()).then(m=>{M=m;m.clusters.forEach((c,i)=>{byC.push([]);spr.push(mk((i*137.5)%360))});m.c.forEach((c,i)=>byC[c].push(i));
+  spr[spr.length-1]=mk(215);$("#mx").innerHTML=results(m.metrics);size()});
+addEventListener("resize",size);size();
+</script></body></html>

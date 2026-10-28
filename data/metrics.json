@@ -1,0 +1,696 @@
+{
+  "task": "predict arXiv category (date-boundary test split: August-October 2026, 35 classes)",
+  "accuracy": {
+    "TF-IDF + Naive Bayes": 0.3618,
+    "TF-IDF + Logistic Regression": 0.5787,
+    "Embeddings + Logistic Regression": 0.6449
+  },
+  "classification": {
+    "task": "Field prediction, rolling-origin CV & honest date holdout (35 classes)",
+    "date_distribution_check": {
+      "2026-08": {
+        "count": 299,
+        "min": "2026-08-01",
+        "max": "2026-08-31"
+      },
+      "2026-09": {
+        "count": 299,
+        "min": "2026-09-01",
+        "max": "2026-09-24"
+      },
+      "2026-10": {
+        "count": 292,
+        "min": "2026-10-01",
+        "max": "2026-10-20"
+      }
+    },
+    "rolling_origin_cv": {
+      "Naive Bayes (TF-IDF)": {
+        "accuracy": 0.4343,
+        "std": 0.0224,
+        "f1_macro": 0.0522,
+        "f1_std": 0.0054,
+        "split_accs": [
+          0.4027,
+          0.4481,
+          0.4613,
+          0.4251
+        ],
+        "time_s": 7.3
+      },
+      "Logistic Regression (TF-IDF)": {
+        "accuracy": 0.6625,
+        "std": 0.0113,
+        "f1_macro": 0.4261,
+        "f1_std": 0.035,
+        "split_accs": [
+          0.6794,
+          0.6623,
+          0.6605,
+          0.6477
+        ],
+        "time_s": 25.7
+      },
+      "Linear SVM (TF-IDF)": {
+        "accuracy": 0.6619,
+        "std": 0.0174,
+        "f1_macro": 0.4416,
+        "f1_std": 0.025,
+        "split_accs": [
+          0.6893,
+          0.6542,
+          0.6622,
+          0.6418
+        ],
+        "time_s": 8.9
+      },
+      "k-Nearest Neighbors (k=15, cosine)": {
+        "accuracy": 0.6391,
+        "std": 0.033,
+        "f1_macro": 0.38,
+        "f1_std": 0.0305,
+        "split_accs": [
+          0.6737,
+          0.659,
+          0.6372,
+          0.5866
+        ],
+        "time_s": 0.8
+      },
+      "Random Forest (100 trees)": {
+        "accuracy": 0.5789,
+        "std": 0.0071,
+        "f1_macro": 0.3839,
+        "f1_std": 0.011,
+        "split_accs": [
+          0.585,
+          0.5855,
+          0.5768,
+          0.5682
+        ],
+        "time_s": 4.3
+      },
+      "HistGradientBoosting (scikit-learn LightGBM eq.)": {
+        "accuracy": 0.4508,
+        "std": 0.2262,
+        "f1_macro": 0.2335,
+        "f1_std": 0.1162,
+        "split_accs": [
+          0.6086,
+          0.605,
+          0.0632,
+          0.5264
+        ],
+        "time_s": 59.0
+      },
+      "PyTorch MLP (Trained from scratch)": {
+        "accuracy": 0.6389,
+        "std": 0.0285,
+        "f1_macro": 0.4233,
+        "f1_std": 0.0191,
+        "split_accs": [
+          0.6686,
+          0.6579,
+          0.6349,
+          0.5941
+        ],
+        "time_s": 7.4
+      },
+      "Voting Ensemble (LR + RF + kNN)": {
+        "accuracy": 0.6678,
+        "std": 0.0258,
+        "f1_macro": 0.4575,
+        "f1_std": 0.0181,
+        "split_accs": [
+          0.6983,
+          0.6832,
+          0.6594,
+          0.6301
+        ],
+        "time_s": 11.8
+      }
+    },
+    "random_5fold_cv": {
+      "Naive Bayes (TF-IDF)": {
+        "accuracy": 0.4599,
+        "std": 0.0034,
+        "f1_macro": 0.058,
+        "f1_std": 0.0008,
+        "time_s": 0.2
+      },
+      "Logistic Regression (TF-IDF)": {
+        "accuracy": 0.6904,
+        "std": 0.0049,
+        "f1_macro": 0.5138,
+        "f1_std": 0.0112,
+        "time_s": 31.3
+      },
+      "Linear SVM (TF-IDF)": {
+        "accuracy": 0.6846,
+        "std": 0.0033,
+        "f1_macro": 0.5029,
+        "f1_std": 0.0087,
+        "time_s": 3.7
+      },
+      "k-Nearest Neighbors (k=15, cosine)": {
+        "accuracy": 0.672,
+        "std": 0.0042,
+        "f1_macro": 0.4684,
+        "f1_std": 0.0104,
+        "time_s": 1.7
+      },
+      "Random Forest (100 trees)": {
+        "accuracy": 0.6053,
+        "std": 0.006,
+        "f1_macro": 0.4468,
+        "f1_std": 0.012,
+        "time_s": 7.4
+      },
+      "HistGradientBoosting (scikit-learn LightGBM eq.)": {
+        "accuracy": 0.4978,
+        "std": 0.1047,
+        "f1_macro": 0.2539,
+        "f1_std": 0.0671,
+        "time_s": 50.7
+      },
+      "PyTorch MLP (Trained from scratch)": {
+        "accuracy": 0.6704,
+        "std": 0.0051,
+        "f1_macro": 0.5019,
+        "f1_std": 0.013,
+        "time_s": 12.2
+      },
+      "Voting Ensemble (LR + RF + kNN)": {
+        "accuracy": 0.6917,
+        "std": 0.0042,
+        "f1_macro": 0.5193,
+        "f1_std": 0.0161,
+        "time_s": 15.5
+      }
+    },
+    "test_results": {
+      "Naive Bayes (TF-IDF)": {
+        "accuracy": 0.3854,
+        "acc_95_ci": [
+          0.3539,
+          0.4169
+        ],
+        "macro_f1": 0.0559,
+        "macro_f1_95_ci": [
+          0.052,
+          0.0645
+        ],
+        "micro_f1": 0.3854,
+        "brier_score": 0.8772,
+        "ece": 0.3022
+      },
+      "Logistic Regression (TF-IDF)": {
+        "accuracy": 0.6461,
+        "acc_95_ci": [
+          0.6146,
+          0.6787
+        ],
+        "macro_f1": 0.5133,
+        "macro_f1_95_ci": [
+          0.4402,
+          0.5738
+        ],
+        "micro_f1": 0.6461,
+        "brier_score": 0.5007,
+        "ece": 0.0734
+      },
+      "Linear SVM (TF-IDF)": {
+        "accuracy": 0.636,
+        "acc_95_ci": [
+          0.6056,
+          0.6674
+        ],
+        "macro_f1": 0.4797,
+        "macro_f1_95_ci": [
+          0.4217,
+          0.5468
+        ],
+        "micro_f1": 0.636,
+        "brier_score": null,
+        "ece": null
+      },
+      "k-Nearest Neighbors (k=15, cosine)": {
+        "accuracy": 0.6124,
+        "acc_95_ci": [
+          0.5798,
+          0.6461
+        ],
+        "macro_f1": 0.3643,
+        "macro_f1_95_ci": [
+          0.3135,
+          0.42
+        ],
+        "micro_f1": 0.6124,
+        "brier_score": 0.5228,
+        "ece": 0.036
+      },
+      "Random Forest (100 trees)": {
+        "accuracy": 0.5528,
+        "acc_95_ci": [
+          0.5202,
+          0.5843
+        ],
+        "macro_f1": 0.3082,
+        "macro_f1_95_ci": [
+          0.2799,
+          0.3523
+        ],
+        "micro_f1": 0.5528,
+        "brier_score": 0.7349,
+        "ece": 0.331
+      },
+      "HistGradientBoosting (scikit-learn LightGBM eq.)": {
+        "accuracy": 0.4899,
+        "acc_95_ci": [
+          0.4573,
+          0.5225
+        ],
+        "macro_f1": 0.2525,
+        "macro_f1_95_ci": [
+          0.2149,
+          0.2806
+        ],
+        "micro_f1": 0.4899,
+        "brier_score": 0.722,
+        "ece": 0.1164
+      },
+      "PyTorch MLP (Trained from scratch)": {
+        "accuracy": 0.6258,
+        "acc_95_ci": [
+          0.5933,
+          0.6551
+        ],
+        "macro_f1": 0.4182,
+        "macro_f1_95_ci": [
+          0.3558,
+          0.4577
+        ],
+        "micro_f1": 0.6258,
+        "brier_score": 0.5622,
+        "ece": 0.1925
+      },
+      "Voting Ensemble (LR + RF + kNN)": {
+        "accuracy": 0.6562,
+        "acc_95_ci": [
+          0.6258,
+          0.6876
+        ],
+        "macro_f1": 0.4155,
+        "macro_f1_95_ci": [
+          0.3686,
+          0.4664
+        ],
+        "micro_f1": 0.6562,
+        "brier_score": 0.5107,
+        "ece": 0.1636
+      }
+    },
+    "statistical_significance": [
+      {
+        "model_a": "Voting Ensemble (LR + RF + kNN)",
+        "model_b": "Logistic Regression (TF-IDF)",
+        "acc_a": 0.6562,
+        "acc_b": 0.6461,
+        "diff": 0.0101,
+        "diff_95_ci": [
+          -0.0202,
+          0.0416
+        ],
+        "boot_p_val": 0.5204,
+        "mcnemar_chi2": 0.339,
+        "mcnemar_p_val": 0.5607,
+        "discordant_table": {
+          "n00": 216,
+          "n01": 90,
+          "n10": 99,
+          "n11": 485
+        },
+        "is_significant": false,
+        "verdict": "NOT Statistically Meaningful (p >= 0.05)"
+      },
+      {
+        "model_a": "Voting Ensemble (LR + RF + kNN)",
+        "model_b": "Linear SVM (TF-IDF)",
+        "acc_a": 0.6562,
+        "acc_b": 0.636,
+        "diff": 0.0202,
+        "diff_95_ci": [
+          -0.009,
+          0.0506
+        ],
+        "boot_p_val": 0.1926,
+        "mcnemar_chi2": 1.554,
+        "mcnemar_p_val": 0.2125,
+        "discordant_table": {
+          "n00": 222,
+          "n01": 84,
+          "n10": 102,
+          "n11": 482
+        },
+        "is_significant": false,
+        "verdict": "NOT Statistically Meaningful (p >= 0.05)"
+      },
+      {
+        "model_a": "Voting Ensemble (LR + RF + kNN)",
+        "model_b": "PyTorch MLP (Trained from scratch)",
+        "acc_a": 0.6562,
+        "acc_b": 0.6258,
+        "diff": 0.0304,
+        "diff_95_ci": [
+          0.0056,
+          0.0562
+        ],
+        "boot_p_val": 0.0198,
+        "mcnemar_chi2": 5.083,
+        "mcnemar_p_val": 0.0238,
+        "discordant_table": {
+          "n00": 253,
+          "n01": 53,
+          "n10": 80,
+          "n11": 504
+        },
+        "is_significant": true,
+        "verdict": "Statistically Significant (p < 0.05)"
+      },
+      {
+        "model_a": "Logistic Regression (TF-IDF)",
+        "model_b": "Linear SVM (TF-IDF)",
+        "acc_a": 0.6461,
+        "acc_b": 0.636,
+        "diff": 0.0101,
+        "diff_95_ci": [
+          -0.0079,
+          0.0292
+        ],
+        "boot_p_val": 0.328,
+        "mcnemar_chi2": 0.877,
+        "mcnemar_p_val": 0.3492,
+        "discordant_table": {
+          "n00": 283,
+          "n01": 32,
+          "n10": 41,
+          "n11": 534
+        },
+        "is_significant": false,
+        "verdict": "NOT Statistically Meaningful (p >= 0.05)"
+      },
+      {
+        "model_a": "Logistic Regression (TF-IDF)",
+        "model_b": "PyTorch MLP (Trained from scratch)",
+        "acc_a": 0.6461,
+        "acc_b": 0.6258,
+        "diff": 0.0203,
+        "diff_95_ci": [
+          -0.0124,
+          0.0528
+        ],
+        "boot_p_val": 0.2414,
+        "mcnemar_chi2": 1.302,
+        "mcnemar_p_val": 0.2538,
+        "discordant_table": {
+          "n00": 213,
+          "n01": 102,
+          "n10": 120,
+          "n11": 455
+        },
+        "is_significant": false,
+        "verdict": "NOT Statistically Meaningful (p >= 0.05)"
+      },
+      {
+        "model_a": "Linear SVM (TF-IDF)",
+        "model_b": "PyTorch MLP (Trained from scratch)",
+        "acc_a": 0.636,
+        "acc_b": 0.6258,
+        "diff": 0.0102,
+        "diff_95_ci": [
+          -0.0225,
+          0.0427
+        ],
+        "boot_p_val": 0.5626,
+        "mcnemar_chi2": 0.292,
+        "mcnemar_p_val": 0.5889,
+        "discordant_table": {
+          "n00": 219,
+          "n01": 105,
+          "n10": 114,
+          "n11": 452
+        },
+        "is_significant": false,
+        "verdict": "NOT Statistically Meaningful (p >= 0.05)"
+      }
+    ],
+    "multi_label": {
+      "baseline_zero": {
+        "name": "Predict No Labels (All Zeros)",
+        "micro_f1": 0.0,
+        "macro_f1": 0.0,
+        "hamming_loss": 0.0663
+      },
+      "baseline_freq": {
+        "name": "Predict Most Frequent (cs.AI)",
+        "micro_f1": 0.3479,
+        "macro_f1": 0.0209,
+        "hamming_loss": 0.0619
+      },
+      "multi_output_lr": {
+        "name": "Multi-Output Logistic Regression (Embeddings)",
+        "micro_f1": 0.5852,
+        "macro_f1": 0.4071,
+        "hamming_loss": 0.0735
+      },
+      "top_labels_f1": [
+        {
+          "class": "cs.AI",
+          "train_support": 6501,
+          "test_support": 514,
+          "f1": 0.748
+        },
+        {
+          "class": "cs.LG",
+          "train_support": 6331,
+          "test_support": 361,
+          "f1": 0.68
+        },
+        {
+          "class": "cs.CV",
+          "train_support": 3506,
+          "test_support": 210,
+          "f1": 0.859
+        },
+        {
+          "class": "cs.CL",
+          "train_support": 2963,
+          "test_support": 237,
+          "f1": 0.667
+        },
+        {
+          "class": "cs.RO",
+          "train_support": 1119,
+          "test_support": 100,
+          "f1": 0.755
+        },
+        {
+          "class": "cs.CR",
+          "train_support": 1041,
+          "test_support": 82,
+          "f1": 0.724
+        },
+        {
+          "class": "cs.CY",
+          "train_support": 842,
+          "test_support": 51,
+          "f1": 0.431
+        },
+        {
+          "class": "cs.HC",
+          "train_support": 821,
+          "test_support": 38,
+          "f1": 0.363
+        },
+        {
+          "class": "cs.IR",
+          "train_support": 622,
+          "test_support": 49,
+          "f1": 0.406
+        },
+        {
+          "class": "cs.SE",
+          "train_support": 585,
+          "test_support": 62,
+          "f1": 0.565
+        }
+      ],
+      "why_hamming_loss_is_deceptive": "Because the multi-label indicator matrix is over 92% sparse, predicting strictly zero labels achieves an artificially low Hamming loss of 0.0798 (meaning 92.02% of individual binary cells are 'correct'). Therefore, Micro-F1 and per-label F1 are the primary scientific metrics; Hamming loss must never be evaluated in isolation."
+    },
+    "confusions": [
+      {
+        "n": 26,
+        "true": "cs.AI",
+        "pred": "cs.LG"
+      },
+      {
+        "n": 21,
+        "true": "cs.AI",
+        "pred": "cs.CL"
+      },
+      {
+        "n": 13,
+        "true": "cs.LG",
+        "pred": "cs.CL"
+      },
+      {
+        "n": 8,
+        "true": "cs.LG",
+        "pred": "cs.CV"
+      },
+      {
+        "n": 7,
+        "true": "cs.LG",
+        "pred": "cs.CR"
+      },
+      {
+        "n": 7,
+        "true": "cs.CL",
+        "pred": "cs.LG"
+      },
+      {
+        "n": 6,
+        "true": "cs.AI",
+        "pred": "cs.SE"
+      },
+      {
+        "n": 6,
+        "true": "cs.RO",
+        "pred": "cs.CV"
+      }
+    ],
+    "best_model": "Voting Ensemble (LR + RF + kNN)",
+    "results": {
+      "Naive Bayes (TF-IDF)": {
+        "accuracy": 0.3854,
+        "acc_95_ci": [
+          0.3539,
+          0.4169
+        ],
+        "macro_f1": 0.0559,
+        "macro_f1_95_ci": [
+          0.052,
+          0.0645
+        ],
+        "micro_f1": 0.3854,
+        "brier_score": 0.8772,
+        "ece": 0.3022
+      },
+      "Logistic Regression (TF-IDF)": {
+        "accuracy": 0.6461,
+        "acc_95_ci": [
+          0.6146,
+          0.6787
+        ],
+        "macro_f1": 0.5133,
+        "macro_f1_95_ci": [
+          0.4402,
+          0.5738
+        ],
+        "micro_f1": 0.6461,
+        "brier_score": 0.5007,
+        "ece": 0.0734
+      },
+      "Linear SVM (TF-IDF)": {
+        "accuracy": 0.636,
+        "acc_95_ci": [
+          0.6056,
+          0.6674
+        ],
+        "macro_f1": 0.4797,
+        "macro_f1_95_ci": [
+          0.4217,
+          0.5468
+        ],
+        "micro_f1": 0.636,
+        "brier_score": null,
+        "ece": null
+      },
+      "k-Nearest Neighbors (k=15, cosine)": {
+        "accuracy": 0.6124,
+        "acc_95_ci": [
+          0.5798,
+          0.6461
+        ],
+        "macro_f1": 0.3643,
+        "macro_f1_95_ci": [
+          0.3135,
+          0.42
+        ],
+        "micro_f1": 0.6124,
+        "brier_score": 0.5228,
+        "ece": 0.036
+      },
+      "Random Forest (100 trees)": {
+        "accuracy": 0.5528,
+        "acc_95_ci": [
+          0.5202,
+          0.5843
+        ],
+        "macro_f1": 0.3082,
+        "macro_f1_95_ci": [
+          0.2799,
+          0.3523
+        ],
+        "micro_f1": 0.5528,
+        "brier_score": 0.7349,
+        "ece": 0.331
+      },
+      "HistGradientBoosting (scikit-learn LightGBM eq.)": {
+        "accuracy": 0.4899,
+        "acc_95_ci": [
+          0.4573,
+          0.5225
+        ],
+        "macro_f1": 0.2525,
+        "macro_f1_95_ci": [
+          0.2149,
+          0.2806
+        ],
+        "micro_f1": 0.4899,
+        "brier_score": 0.722,
+        "ece": 0.1164
+      },
+      "PyTorch MLP (Trained from scratch)": {
+        "accuracy": 0.6258,
+        "acc_95_ci": [
+          0.5933,
+          0.6551
+        ],
+        "macro_f1": 0.4182,
+        "macro_f1_95_ci": [
+          0.3558,
+          0.4577
+        ],
+        "micro_f1": 0.6258,
+        "brier_score": 0.5622,
+        "ece": 0.1925
+      },
+      "Voting Ensemble (LR + RF + kNN)": {
+        "accuracy": 0.6562,
+        "acc_95_ci": [
+          0.6258,
+          0.6876
+        ],
+        "macro_f1": 0.4155,
+        "macro_f1_95_ci": [
+          0.3686,
+          0.4664
+        ],
+        "micro_f1": 0.6562,
+        "brier_score": 0.5107,
+        "ece": 0.1636
+      }
+    }
+  }
+}

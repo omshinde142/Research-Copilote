@@ -1,0 +1,30 @@
+# Virtual Environment
+venv/
+env/
+.env
+
+# Raw 3.6GB Kaggle Snapshot (cannot exceed GitHub 100MB file limit)
+data/arxiv-metadata-oai-snapshot.json
+data/*.tar.gz
+data/*.zip
+
+# Large Model weights & GPU run dumps
+data/models/
+downloaded_gpu_run/
+checkpoints/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Temporary artifacts
+temp_live_app.png
+temp_right_panel.png
+test_driver.html

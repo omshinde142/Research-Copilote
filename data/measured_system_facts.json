@@ -1,0 +1,255 @@
+{
+  "hardware": {
+    "os": "macOS-26.7.1-arm64-arm-64bit-Mach-O",
+    "system": "Darwin",
+    "release": "25.6.0",
+    "machine": "arm64",
+    "processor": "arm",
+    "cpu_count_physical": 10,
+    "cpu_count_logical": 10,
+    "total_ram_gb": 16.0,
+    "python_version": "3.13.7"
+  },
+  "memory": {
+    "rss_mb": 659.05,
+    "vms_mb": 428257.06
+  },
+  "papers_served_count": 16417,
+  "file_sizes": {
+    "papers_pkl_bytes": 24285306,
+    "index_faiss_bytes": 29685998,
+    "index_ft_faiss_bytes": 29685998,
+    "splits_json_bytes": 169527,
+    "data_report_json_bytes": 7416,
+    "metrics_json_bytes": 16328,
+    "embedder_ft_dir_bytes": 91611557
+  },
+  "models_used": {
+    "embedder": "data/models/embedder-ft",
+    "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+    "index_file": "/Users/durveshnarkhede/Desktop/COPILOTE/data/index_ft.faiss"
+  },
+  "n_queries_tested": 50,
+  "latency_summary_ms": {
+    "encoding": {
+      "median_p50_ms": 5.25,
+      "mean_ms": 34.63,
+      "p95_ms": 182.76,
+      "p99_ms": 453.18,
+      "min_ms": 4.38,
+      "max_ms": 541.09
+    },
+    "faiss": {
+      "median_p50_ms": 0.26,
+      "mean_ms": 0.32,
+      "p95_ms": 0.42,
+      "p99_ms": 1.65,
+      "min_ms": 0.18,
+      "max_ms": 2.7
+    },
+    "bm25": {
+      "median_p50_ms": 17.55,
+      "mean_ms": 17.67,
+      "p95_ms": 22.23,
+      "p99_ms": 25.4,
+      "min_ms": 11.17,
+      "max_ms": 26.59
+    },
+    "rrf": {
+      "median_p50_ms": 0.02,
+      "mean_ms": 0.02,
+      "p95_ms": 0.03,
+      "p99_ms": 0.03,
+      "min_ms": 0.02,
+      "max_ms": 0.03
+    },
+    "reranking": {
+      "median_p50_ms": 191.66,
+      "mean_ms": 194.08,
+      "p95_ms": 231.1,
+      "p99_ms": 240.12,
+      "min_ms": 155.21,
+      "max_ms": 241.02
+    },
+    "total_search": {
+      "median_p50_ms": 216.81,
+      "mean_ms": 246.72,
+      "p95_ms": 431.79,
+      "p99_ms": 681.73,
+      "min_ms": 173.26,
+      "max_ms": 744.34
+    },
+    "total_ask": {
+      "median_p50_ms": 354.12,
+      "mean_ms": 399.32,
+      "p95_ms": 722.72,
+      "p99_ms": 927.55,
+      "min_ms": 278.78,
+      "max_ms": 957.9
+    }
+  },
+  "real_examples": [
+    {
+      "query": "Contrastive learning for graph neural networks",
+      "top_paper_title": "Cross-view Self-Supervised Learning on Heterogeneous Graph Neural Network via Bootstrapping",
+      "top_paper_arxiv_id": "2201.03340",
+      "top_paper_score": 8.191282272338867,
+      "top_paper_category": "cs.LG",
+      "answer": "In this paper, we propose the novel Label Contrastive Coding based Graph Neural Network (LCGNN) to utilize label information more effectively and comprehensively. [2] A crucial step in contrastive learning is the creation of 'augmented' graphs from the input graphs. [4] A large number of graph contrastive learning approaches have shown promising performance for representation learning on graphs, which train models by maximizing agreement between original graphs and their augmented views (i.e., positive views). [6]",
+      "citations_count": 3,
+      "checked_parts": [
+        {
+          "text": "In this paper, we propose the novel Label Contrastive Coding based Graph Neural Network (LCGNN) to utilize label information more effectively and comprehensively.",
+          "score": 0.0,
+          "supported": false
+        },
+        {
+          "text": "[2] A crucial step in contrastive learning is the creation of 'augmented' graphs from the input graphs.",
+          "score": 0.3,
+          "supported": false
+        },
+        {
+          "text": "[4] A large number of graph contrastive learning approaches have shown promising performance for representation learning on graphs, which train models by maximizing agreement between original graphs and their augmented views (i.e., positive views).",
+          "score": 0.67,
+          "supported": true
+        },
+        {
+          "text": "[6]",
+          "score": 0.0,
+          "supported": false
+        }
+      ]
+    },
+    {
+      "query": "Diffusion models for high resolution image synthesis",
+      "top_paper_title": "Layered Diffusion Model for One-Shot High Resolution Text-to-Image Synthesis",
+      "top_paper_arxiv_id": "2407.06079",
+      "top_paper_score": 9.813590049743652,
+      "top_paper_category": "cs.CV",
+      "answer": "We demonstrate that higher resolution synthesis can be achieved by layering convolutions at additional resolution scales, in contrast to other methods which require additional models for super-resolution synthesis. [1] Diffusion models (DMs) have recently gained attention with state-of-the-art performance in text-to-image synthesis. [2] Current large-scale diffusion models represent a giant leap forward in conditional image synthesis, capable of interpreting diverse cues like text, human poses, and edges. [6]",
+      "citations_count": 3,
+      "checked_parts": [
+        {
+          "text": "We demonstrate that higher resolution synthesis can be achieved by layering convolutions at additional resolution scales, in contrast to other methods which require additional models for super-resolution synthesis.",
+          "score": 0.0,
+          "supported": false
+        },
+        {
+          "text": "[1] Diffusion models (DMs) have recently gained attention with state-of-the-art performance in text-to-image synthesis.",
+          "score": 0.63,
+          "supported": true
+        },
+        {
+          "text": "[2] Current large-scale diffusion models represent a giant leap forward in conditional image synthesis, capable of interpreting diverse cues like text, human poses, and edges.",
+          "score": 0.58,
+          "supported": true
+        },
+        {
+          "text": "[6]",
+          "score": 0.0,
+          "supported": false
+        }
+      ]
+    },
+    {
+      "query": "Parameter efficient fine tuning LoRA",
+      "top_paper_title": "GeoLoRA: Geometric integration for parameter efficient fine-tuning",
+      "top_paper_arxiv_id": "2410.18720",
+      "top_paper_score": 8.838666915893555,
+      "top_paper_category": "cs.LG",
+      "answer": "Low-Rank Adaptation (LoRA) has become a widely used method for parameter-efficient fine-tuning of large-scale, pre-trained neural networks. [1] However, LoRA and its extensions face several challenges, including the need for rank adaptivity, robustness, and computational efficiency during the fine-tuning process. [1] Parameter-efficient fine-tuning (PEFT) approaches have emerged as a viable alternative by allowing us to fine-tune models by updating only a small number of parameters. [2]",
+      "citations_count": 3,
+      "checked_parts": [
+        {
+          "text": "Low-Rank Adaptation (LoRA) has become a widely used method for parameter-efficient fine-tuning of large-scale, pre-trained neural networks.",
+          "score": 0.0,
+          "supported": false
+        },
+        {
+          "text": "[1] However, LoRA and its extensions face several challenges, including the need for rank adaptivity, robustness, and computational efficiency during the fine-tuning process.",
+          "score": 1.0,
+          "supported": true
+        },
+        {
+          "text": "[1] Parameter-efficient fine-tuning (PEFT) approaches have emerged as a viable alternative by allowing us to fine-tune models by updating only a small number of parameters.",
+          "score": 0.46,
+          "supported": true
+        },
+        {
+          "text": "[2]",
+          "score": 0.0,
+          "supported": false
+        }
+      ]
+    },
+    {
+      "query": "Federated learning differential privacy",
+      "top_paper_title": "Evaluation of Differential Privacy Mechanisms on Federated Learning",
+      "top_paper_arxiv_id": "2510.09691",
+      "top_paper_score": 9.32858657836914,
+      "top_paper_category": "cs.LG",
+      "answer": "Differential privacy is one of the methods to solve the problem of privacy protection in federated learning. [2] Therefore, we proposed an adaptive differential privacy method based on federated learning. [2] This paper presents a gradient leakage resilient approach to privacy-preserving federated learning with per training example-based client differential privacy, coined as Fed-CDP. [6]",
+      "citations_count": 3,
+      "checked_parts": [
+        {
+          "text": "Differential privacy is one of the methods to solve the problem of privacy protection in federated learning.",
+          "score": 0.0,
+          "supported": false
+        },
+        {
+          "text": "[2] Therefore, we proposed an adaptive differential privacy method based on federated learning.",
+          "score": 1.0,
+          "supported": true
+        },
+        {
+          "text": "[2] This paper presents a gradient leakage resilient approach to privacy-preserving federated learning with per training example-based client differential privacy, coined as Fed-CDP.",
+          "score": 0.7,
+          "supported": true
+        },
+        {
+          "text": "[6]",
+          "score": 0.0,
+          "supported": false
+        }
+      ]
+    }
+  ],
+  "refusal_case": {
+    "query": "quantum teleportation recipe for baking banana bread in hypergravity",
+    "top_paper_title": "Multimarked Spatial Search by Continuous-Time Quantum Walk",
+    "top_score": -10.79056167602539,
+    "refusal_threshold": -5.0,
+    "refused": true,
+    "app_response": "Refused (no confident papers found)"
+  },
+  "failure_case": {
+    "query": "Transformers in electric power transmission networks",
+    "top_paper_title": "Moving Target Defense for Robust Monitoring of Electric Grid Transformers in Adversarial Environments",
+    "top_paper_category": "cs.GT",
+    "top_score": 0.3402310311794281,
+    "observed_failure": "The search engine retrieves AI Transformer language models applied to grid data instead of mechanical/electrical power step-up/step-down transformers due to Computer Science corpus domain boundaries.",
+    "answer": "Electric power grid components, such as high voltage transformers (HVTs), generating stations, substations, etc. [1] The use of transformers distinguishes our approach from related work on network problem classification, which still primarily relies on non-deep-learning methods. [2] Our results show that the distribution of specific collections of subtrees of the transmission network plays a critical role on the patterns of power redistribution, and motivates the block decomposition of the transmission network as a structure to understand long-distance propagation of disturbances. [6]",
+    "checked_parts": [
+      {
+        "text": "Electric power grid components, such as high voltage transformers (HVTs), generating stations, substations, etc.",
+        "score": 0.0,
+        "supported": false
+      },
+      {
+        "text": "[1] The use of transformers distinguishes our approach from related work on network problem classification, which still primarily relies on non-deep-learning methods.",
+        "score": 0.22,
+        "supported": false
+      },
+      {
+        "text": "[2] Our results show that the distribution of specific collections of subtrees of the transmission network plays a critical role on the patterns of power redistribution, and motivates the block decomposition of the transmission network as a structure to understand long-distance propagation of disturbances.",
+        "score": 0.27,
+        "supported": false
+      },
+      {
+        "text": "[6]",
+        "score": 0.0,
+        "supported": false
+      }
+    ]
+  }
+}
